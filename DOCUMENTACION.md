@@ -1,4 +1,4 @@
-﻿# Documentación de Respuestas – Prueba Técnica Desarrollador TI / Sénior
+# Documentación de Respuestas – Prueba Técnica Desarrollador TI / Sénior
 
 **Candidato:** Juan Andres Morales
 **GitHub:** [https://github.com/Primooo326/prueba-tecnica-davivienda.git](https://github.com/Primooo326/prueba-tecnica-davivienda.git)
@@ -108,17 +108,19 @@ erDiagram
 
 ### 4. Aspectos No Funcionales y Operacionales
 
-- **Escalabilidad**:
-  - **Horizontal**: Despliegue de los servicios (Pólizas, Riesgos, Notificaciones) en contenedores Docker gestionados por Kubernetes (EKS/GKE), configurando *Horizontal Pod Autoscaler (HPA)* para escalar según el consumo de CPU y memoria.
-  - **Base de Datos**: Implementación de réplicas de lectura (Read Replicas) para optimizar consultas rápidas como `GET /polizas`.
+- **Escalabilidad y Despliegue**:
+  - **Infraestructura como Código**: Todo el aprovisionamiento de la infraestructura está automatizado en **Azure** mediante **Terraform HCL**.
+  - **Horizontal**: Despliegue en **Azure Container Apps (ACA)**, configurando reglas de auto-escalado horizontal automático (nativamente soportado por KEDA) basadas en concurrencia HTTP y consumo de recursos (CPU y memoria).
+  - **Base de Datos**: Implementación de réplicas de lectura (Read Replicas) en Azure SQL Database / PostgreSQL para optimizar consultas rápidas como `GET /polizas`.
 - **Logs y Observabilidad**:
-  - Implementación de un **Trace ID (Correlation ID)** generado en el API Gateway y propagado a través de las cabeceras HTTP y eventos del Broker de Mensajería para trazar peticiones distribuidas de punta a punta.
-  - Stack centralizado de monitoreo (OpenTelemetry + Prometheus + Grafana para métricas, y Grafana Loki para centralizar logs estructurados en formato JSON).
+  - **Monitoreo APM**: Integración nativa de **Azure Application Insights** mediante el starter de OpenTelemetry (`spring-cloud-azure-starter-monitor`). Recolecta automáticamente telemetría estructurada, logs, trazas correlacionadas de punta a punta y métricas del sistema (JVM, solicitudes, latencia).
+  - **Logs Centralizados**: Trazabilidad e indexación de logs unificada en un **Azure Log Analytics Workspace**.
 - **Tolerancia a Fallos**:
   - **Circuit Breaker (Resilience4j)** en el adaptador que conecta con la capa media en Weblogic para evitar que caídas o latencia del CORE degraden el API de Pólizas.
   - **Dead Letter Queues (DLQ)** en el Message Broker para reintentar de manera asíncrona la sincronización de eventos fallidos hacia el CORE o el envío de correos.
 - **Versionamiento de APIs**:
   - Versionamiento por URL (e.g., `/api/v1/polizas` y `/api/v2/polizas`). Esto garantiza compatibilidad hacia atrás y permite a los clientes migrar progresivamente a la nueva versión sin cortes de servicio.
+
 
 ---
 ---
