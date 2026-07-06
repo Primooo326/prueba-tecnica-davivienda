@@ -1,0 +1,27 @@
+# Excluir JDK portátil local
+jdk/
+jdk.zip
+
+# Excluir carpetas de compilación y Gradle
+.gradle/
+build/
+**/build/
+**/bin/
+**/out/
+
+# Archivos generados temporalmente y logs
+*.log
+**/logs/
+.system_generated/
+
+# Archivos de entorno y temporales de IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Excluir empaquetados finales y PDFs generados (para no subirlos a Git)
+*.zip
+*.pdf
+*.html
