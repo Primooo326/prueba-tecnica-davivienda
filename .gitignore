@@ -21,7 +21,6 @@ build/
 *.ipr
 *.iws
 
-# Excluir empaquetados finales y PDFs generados (para no subirlos a Git)
 *.zip
 *.pdf
 *.html
